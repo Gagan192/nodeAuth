@@ -1,5 +1,66 @@
 extends layout
 
 block content
-  h1 Chat | App
-  p Welcome to The Chat App
+  div(id="mySidenav" class="sidenav")
+   p Please login below 1Please login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login below
+   p Please login below 2
+   p Please login below 3
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below 4
+   p Please login below Last 1
+   p Please login below Last 2
+   p Please login below Last 3
+   p Please login below Last 1
+   p Please login below Last 2
+   p Please login below Last 3
+  div(id="main")
+   h2(id="openImp" style="font-size:30px;cursor:pointer" onclick="openNav()") &#9776 Discuss
+   h2(style="font-size:30px;cursor:pointer ; display:none" id="closeImp" onclick="closeNav()") &times Discuss
+
+   p Welcome to The Chat App
+   p Please login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   p Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 Please login below
+   h2 I am the last one
+
+block footer
+ .navbar.navbar-expand-md.fixed-bottom.bg-dark.navbar-dark(role='navigation')
+   .container
+    div(class="input-group")
+      textarea(type="text" class="form-control" placeholder="Type Your Message..." aria-label="Recipient's username" aria-describedby="basic-addon2")
+      div(class="input-group-append")
+        button(class="btn btn-outline-secondary" type="button") Send
+        button(class="btn btn-outline-secondary" type="button") Mark

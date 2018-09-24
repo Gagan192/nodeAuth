@@ -1,11 +1,12 @@
 doctype html
 html(lang='en')
   head
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
     title #{title}
     link( rel='stylesheet' ,href='/stylesheets/bootstrap.css')
     link( rel='stylesheet' ,href='/stylesheets/style.css')
   body
-    .navbar.navbar-expand-sm.fixed-top.bg-dark.navbar-dark(role='navigation')
+    .navbar.navbar-expand-md.fixed-top.bg-dark.navbar-dark(role='navigation')
       .container
         a.navbar-brand(href='#') NodeAuth
         button.navbar-toggler(type='button',data-toggle='collapse',data-target='#navbarNavAltMarkup',aria-controls="navbarNavAltMarkup",aria-expanded="false",aria-label="Toggle navigation")
@@ -20,7 +21,7 @@ html(lang='en')
              li.nav-item(class=(title == 'Login' ? 'active' : ''))
                a.nav-link(href='/users/login' ) Login
           ul.nav.navbar-nav.ml-auto
-            if user
+            if !user
              li.nav-item
               a.nav-link(href='/users/logout') Logout
 
@@ -28,24 +29,8 @@ html(lang='en')
       != messages()
       block content
 
-    .navbar.navbar-expand-sm.fixed-bottom.bg-dark.navbar-dark(role='navigation')
-      .container
-        a.navbar-brand(href='#') NodeAuth
-        button.navbar-toggler(type='button',data-toggle='collapse',data-target='#navbarNavAltMarkup',aria-controls="navbarNavAltMarkup",aria-expanded="false",aria-label="Toggle navigation")
-          span.navbar-toggler-icon
-        #navbarNavAltMarkup.collapse.navbar-collapse
-          ul.nav.navbar-nav.mr-auto
-            li.nav-item(class=(title == 'Chat | App' ? 'active' : ''))
-              a.nav-link(href='/') Home
-            if !user
-             li.nav-item(class=(title == 'Register' ? 'active' : ''))
-               a.nav-link(href='/users/register') Register
-             li.nav-item(class=(title == 'Login' ? 'active' : ''))
-               a.nav-link(href='/users/login' ) Login
-          ul.nav.navbar-nav.ml-auto
-            if user
-             li.nav-item
-              a.nav-link(href='/users/logout') Logout
+    block footer
 
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
     script(src='/javascripts/bootstrap.js')
+    script(src='/javascripts/javascript.js')
