@@ -37,25 +37,24 @@ ul.error li{
     background-color: #11;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 65px;
+    padding-top: 60px;
     padding-bottom: 60px;
     border-right-style: solid;
 }
 
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+.impMessageStyle {
+  margin-top:7px;
+  margin-right:7px;
+  margin-left:7px
+}
+
+.normalMessageStyle {
+  margin-top:7px;
 }
 
 #main {
     transition: margin-left .5s;
-    padding: 16px;
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
 }

@@ -1,7 +1,7 @@
 
 function openNav() {
-    document.getElementById("mySidenav").style.width = "40%";
-    document.getElementById("main").style.marginLeft = "40%";
+    document.getElementById("mySidenav").style.width = "70%";
+    document.getElementById("main").style.marginLeft = "70%";
     $("#openImp").hide();
     $("#closeImp").show();
 }

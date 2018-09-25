@@ -1,66 +1,57 @@
 extends layout
 
-block content
-  div(id="mySidenav" class="sidenav")
-   p Please login below 1Please login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login below
-   p Please login below 2
-   p Please login below 3
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below 4
-   p Please login below Last 1
-   p Please login below Last 2
-   p Please login below Last 3
-   p Please login below Last 1
-   p Please login below Last 2
-   p Please login below Last 3
-  div(id="main")
-   h2(id="openImp" style="font-size:30px;cursor:pointer" onclick="openNav()") &#9776 Discuss
-   h2(style="font-size:30px;cursor:pointer ; display:none" id="closeImp" onclick="closeNav()") &times Discuss
 
-   p Welcome to The Chat App
-   p Please login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login belowPlease login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   p Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 Please login below
-   h2 I am the last one
+block content
+  div(id="mySidenav" class="sidenav" style="background-color:white")
+    div.card.impMessageStyle
+      div.card-header
+        b
+          i Gagandeep &nbsp
+        span 10:10 pm
+      div.card-body
+        p.card-text This is mY Message
+
+    div.card.impMessageStyle
+      div.card-header
+        b
+         i Manoj Goyal &nbsp
+        span 10:10 pm
+      div.card-body
+        p.card-text Special Message 2
+
+  div(class="modal fade" id="myModal" role="dialog")
+   div(class="modal-dialog")
+     div(class="modal-content")
+       div(class="modal-header")
+         h4(class="modal-title") Todays ProBlem
+         button(type="button" class="close" data-dismiss="modal") &times;
+       div(class="modal-body")
+         p Natural Disasters are becoming very Frequent.
+       div(class="modal-footer")
+         button(type="button" class="btn btn-default" data-dismiss="modal") Close
+
+  div(id="main" class="container")
+    div.card.normalMessageStyle
+      div.card-header
+        b
+          i Gagandeep &nbsp
+        span 10:10 pm
+      div.card-body
+        p.card-text This is My Mesage 1
+
+    div.card.normalMessageStyle
+      div.card-header
+        b
+         i Manoj Goyal &nbsp
+        span 10:10 pm
+      div.card-body
+        p.card-text This is My Mesage 2
 
 block footer
  .navbar.navbar-expand-md.fixed-bottom.bg-dark.navbar-dark(role='navigation')
    .container
     div(class="input-group")
-      textarea(type="text" class="form-control" placeholder="Type Your Message..." aria-label="Recipient's username" aria-describedby="basic-addon2")
+      input(type="text" class="form-control" placeholder="Type Your Message..." aria-label="Recipient's username" aria-describedby="basic-addon2")
       div(class="input-group-append")
         button(class="btn btn-outline-secondary" type="button") Send
         button(class="btn btn-outline-secondary" type="button") Mark

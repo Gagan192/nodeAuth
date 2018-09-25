@@ -8,7 +8,11 @@ html(lang='en')
   body
     .navbar.navbar-expand-md.fixed-top.bg-dark.navbar-dark(role='navigation')
       .container
-        a.navbar-brand(href='#') NodeAuth
+        //a.navbar-brand(href='#') Federal
+        if title == 'Chat | App'
+          a.navbar-brand(href='#' id="openImp" onclick="openNav()") &#9776 Summary
+          a.navbar-brand(href='#' style="display:none" id="closeImp" onclick="closeNav()") &times Summary
+          button(type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal") ProBlem
         button.navbar-toggler(type='button',data-toggle='collapse',data-target='#navbarNavAltMarkup',aria-controls="navbarNavAltMarkup",aria-expanded="false",aria-label="Toggle navigation")
           span.navbar-toggler-icon
         #navbarNavAltMarkup.collapse.navbar-collapse
@@ -25,6 +29,7 @@ html(lang='en')
              li.nav-item
               a.nav-link(href='/users/logout') Logout
 
+    block header
     .container
       != messages()
       block content
