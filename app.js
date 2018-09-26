@@ -71,29 +71,80 @@ app.use(function (req, res, next) {
 
 app.get('*',function(req,res,next){
   res.locals.user = req.user || null;
-  console.log('******************');
-  console.log(req.user);
-  console.log('******************');
   next();
 });
 
 app.use('/', routes);
 app.use('/users', users);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
+//
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+//
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+
+const {generateMessageImpTag} = require('./utils/message');
+const {generateMessage} =require('./utils/message');
+const {isRealString}=require('./utils/validation');
+const {Users} = require('./utils/users');
+
+const socketIO = require('socket.io');
+var server = app.listen(3000);
+var io = socketIO.listen(server);
+var users= new Users();
+
+io.on('connection',(socket)=>{
+  console.log('New User Connected');
+
+    socket.on('join',(params,callback)=>{
+      if(!isRealString(params.name) || !isRealString(params.room)){
+        return callback('Name and Room name are required');
+      }
+      //to join room
+      socket.join(params.room);
+
+      users.removeUser(socket.id);
+      users.addUser(socket.id,params.name,params.room);
+      //io.to(params.room).emit('updateUserList',users.getUserList(params.room));
+
+      socket.emit('newMessage', generateMessage('Admin','Welcome to the chat app'));
+      socket.broadcast.to(params.room).emit('newMessage',generateMessage('Admin',`${params.name} has joined.`));
+
+      callback();
+    });
+
+  socket.on('createMessage',(message,callback)=>{
+    var user = users.getUser(socket.id);
+
+    if(user && isRealString(message.text)){
+      //Emitting to All That are Connected
+      io.to(user.room).emit('newMessage',generateMessageImpTag(user.name,message.text,message.ImpTag));
+
+    }
+    callback();
+
+  });
+
+  socket.on('disconnect',()=>{
+    var user = users.removeUser(socket.id);
+
+    if(user){
+      //io.to(user.room).emit('updateUserList',users.getUserList(user.room));
+      io.to(user.room).emit('newMessage',generateMessage('Admin',`${user.name} has left.`));
+    }
+  });
 });
 
 module.exports = app;

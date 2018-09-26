@@ -3,21 +3,7 @@ extends layout
 
 block content
   div(id="mySidenav" class="sidenav" style="background-color:white")
-    div.card.impMessageStyle
-      div.card-header
-        b
-          i Gagandeep &nbsp
-        span 10:10 pm
-      div.card-body
-        p.card-text This is mY Message
-
-    div.card.impMessageStyle
-      div.card-header
-        b
-         i Manoj Goyal &nbsp
-        span 10:10 pm
-      div.card-body
-        p.card-text Special Message 2
+    ol(id="messages1" style="height: 79vh; overflow: auto")
 
   div(class="modal fade" id="myModal" role="dialog")
    div(class="modal-dialog")
@@ -31,27 +17,35 @@ block content
          button(type="button" class="btn btn-default" data-dismiss="modal") Close
 
   div(id="main" class="container")
-    div.card.normalMessageStyle
-      div.card-header
-        b
-          i Gagandeep &nbsp
-        span 10:10 pm
-      div.card-body
-        p.card-text This is My Mesage 1
+    ol(id="messages" style="height: 79vh; overflow: auto")
 
-    div.card.normalMessageStyle
-      div.card-header
-        b
-         i Manoj Goyal &nbsp
-        span 10:10 pm
-      div.card-body
-        p.card-text This is My Mesage 2
+  |  <script id="message-template" type="text/template">
+  |    <li style="list-style:none" class="impMessageStyle">
+  |      <div class="card">
+  |        <div class="card-header">
+  |      <b><i>{{from}}</i></b>
+  |      <span>{{createdAt}}</span>
+  |      </div>
+  |      <div class="card-body">
+  |        <p class="card-text">{{text}}</p>
+  |      </div>
+  |     </div>
+  |    </li>
+  |  </script>
+
+  |    <script src="socket.io/socket.io.js"></script>
+  |    <script src="/../javascripts/libs/jquery-3.3.1.min.js"></script>
+  |    <script src="/../javascripts/libs/moment.js"></script>
+  |    <script src="/../javascripts/libs/mustache.js"></script>
+  |    <script src="/../javascripts/libs/deparam.js"></script>
+  |    <script src="/../javascripts/chat.js"></script>
 
 block footer
- .navbar.navbar-expand-md.fixed-bottom.bg-dark.navbar-dark(role='navigation')
-   .container
-    div(class="input-group")
-      input(type="text" class="form-control" placeholder="Type Your Message..." aria-label="Recipient's username" aria-describedby="basic-addon2")
-      div(class="input-group-append")
-        button(class="btn btn-outline-secondary" type="button") Send
-        button(class="btn btn-outline-secondary" type="button") Mark
+
+     .container.fixed-bottom(style="background-color:white")
+        form(id="message-form")
+         div(class="input-group")
+           input(name="message" type="text" class="form-control" autofocus autocomplete="off" placeholder="Type Your Message...")
+           div(class="input-group-btn")
+             button(class="btn btn-outline-secondary submitbutton"  name="Normal" type="submit") Send
+             button(class="btn btn-outline-secondary submitbutton"  name="Important" type="submit") Mark

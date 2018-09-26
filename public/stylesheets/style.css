@@ -1,6 +1,5 @@
 body {
     padding-top: 60px;
-    padding-bottom: 60px;
   }
 
 ul.success li{
@@ -27,6 +26,14 @@ ul.error li{
    list-style: none;
 }
 
+ol#messages li:last-child{
+  padding-bottom: 22px;
+}
+
+ol#messages1 li:last-child{
+  padding-bottom: 22px;
+}
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -43,13 +50,8 @@ ul.error li{
 }
 
 .impMessageStyle {
-  margin-top:7px;
-  margin-right:7px;
-  margin-left:7px
-}
-
-.normalMessageStyle {
-  margin-top:7px;
+  margin-top:5px;
+  margin-right:5px;
 }
 
 #main {

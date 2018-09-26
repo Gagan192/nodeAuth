@@ -8,8 +8,7 @@ mongoose.connect('mongodb://localhost:27017/ChatApp');
 // User Schema
 var UserSchema = mongoose.Schema({
   username: {
-      type: String,
-      index: true
+      type: String
   },
   password: {
     type: String
