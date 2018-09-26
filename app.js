@@ -101,7 +101,8 @@ const {isRealString}=require('./utils/validation');
 const {Users} = require('./utils/users');
 
 const socketIO = require('socket.io');
-var server = app.listen(3000);
+const port=process.env.PORT || 3000;
+var server = app.listen(port);
 var io = socketIO.listen(server);
 var users= new Users();
 
