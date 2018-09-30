@@ -25,7 +25,7 @@ html(lang='en')
              li.nav-item(class=(title == 'Login' ? 'active' : ''))
                a.nav-link(href='/users/login' ) Login
           ul.nav.navbar-nav.ml-auto
-            if !user
+            if user
              li.nav-item
               a.nav-link(href='/users/logout') Logout
 

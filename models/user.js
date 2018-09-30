@@ -18,8 +18,19 @@ var UserSchema = mongoose.Schema({
   },
   name: {
     type: String
-  }
+  },
+  tokens: [{
+    access: {
+      type: String,
+      required: true
+    },
+    token: {
+      type: String,
+      required: true
+    }
+  }]
 });
+
 
 var User = module.exports = mongoose.model('User',UserSchema);
 
@@ -27,8 +38,8 @@ module.exports.getUserById= function(id,callback){
   User.findById(id,callback);
 };
 
-module.exports.getUserByUsername = function(username,callback){
-  var query = {username:username};
+module.exports.getUserByUsername = function(email,callback){
+  var query = {email:email};
   User.findOne(query, callback);
 };
 

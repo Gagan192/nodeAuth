@@ -5,13 +5,14 @@ var upload = multer({dest: './uploads'});
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+const _ =require('lodash');
 
 var User = require('../models/user');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+// router.get('/', function(req, res, next) {
+//   res.send('respond with a resource');
+// });
 
 router.get('/register', function(req, res, next) {
   res.render('register', { title: 'Register' });
@@ -34,6 +35,7 @@ passport.serializeUser(function(user,done){
 
 passport.deserializeUser(function(id,done){
   User.getUserById(id,function(err,user){
+    var user = _.pick(user, ['_id']);
       done(err,user);
   });
 });
