@@ -23,7 +23,7 @@ block content
          h4(class="modal-title") Todays ProBlem
          button(type="button" class="close" data-dismiss="modal") &times;
        div(class="modal-body")
-         p Natural Disasters are becoming very Frequent.
+         p #{question.problem}
        div(class="modal-footer")
          button(type="button" class="btn btn-default" data-dismiss="modal") Close
 
@@ -58,7 +58,8 @@ block content
   |    <script src="/../javascripts/libs/mustache.js"></script>
   |    <script src="/../javascripts/libs/deparam.js"></script>
   |    <script src="/../javascripts/chat.js"></script>
-  |   <script>localStorage.setItem("token", "#{token}");</script>
+  |   <script>localStorage.setItem("token", "#{token}");
+  |           localStorage.setItem("question", "#{question._id}");</script>
 
 block footer
 

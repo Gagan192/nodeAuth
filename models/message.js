@@ -15,7 +15,8 @@ var UserSchema = mongoose.Schema({
     required: true
   },
   questionId: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   },
   ImpTag: {
     type:Boolean,

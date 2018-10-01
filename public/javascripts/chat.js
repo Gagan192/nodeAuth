@@ -21,7 +21,7 @@ function scrollToBottom(chat_box){
 
   socket.on('connect',function(){
     //var params = jQuery.deparam(window.location.search);
-    var params = {"questionId":"global","token":localStorage.token}
+    var params = {"questionId":localStorage.question,"token":localStorage.token}
     socket.emit('join',params,function(err){
       if(err){
         alert(err);

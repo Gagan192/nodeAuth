@@ -3,6 +3,7 @@ var router = express.Router();
 const jwt = require('jsonwebtoken');
 var User = require('../models/user');
 var Message = require('../models/message');
+var Problem = require('../models/problem');
 
 /* GET home page. */
 router.get('/', ensureAuthenticated ,function(req, res, next) {
@@ -19,15 +20,28 @@ router.get('/', ensureAuthenticated ,function(req, res, next) {
   var access = "auth";
   var token = jwt.sign({_id: req.user._id.toHexString(),access},"abc123").toString();
   User.findOneAndUpdate({_id:req.user._id},{"tokens":[{access,token}]},{new:true},function(err,user){
-      if(err)
-      res.render('login', { title: 'Login' , error:"Login Again"});
+      if(err){
+          res.render('login', { title: 'Login' , error:"Login Again"});
+      }else {
+        Problem.findOne({active:true,discussed:false},{_id:1,problem:1},function(err,problem){
+          if(err){
+            res.render('login', { title: 'Login' , error:"Unable To fetch the ProBlem"});
+          }else {
+            console.log('question',problem);
+            Message.find({questionId: problem._id},{authId:0,__v:0}, function(err, docs){
+              if(err){
+                  res.render('login', { title: 'Login' , error:"Unable To fetch Previous data on the ProBlem"});
+              }else {
+                console.log('Messages',docs);
+                res.render('index', { title: 'Chat | App' , token:user.tokens[0].token,retrieveMessages:docs,question:problem});
+              }
 
-      Message.find({ questionId: 'global'},{authId:0,__v:0}, function (err, docs) {
-        if(err) res.render('login', { title: 'Login' , error:"Unable To fetch Previous data on the ProBlem"});
+            });
+          }
+        });
 
-        console.log(docs);
-        res.render('index', { title: 'Chat | App' , token:user.tokens[0].token,retrieveMessages:docs});
-      });
+      }
+
     });
 
   // res.render('index', { title: 'Chat | App' , token:token1});
