@@ -4,6 +4,17 @@ extends layout
 block content
   div(id="mySidenav" class="sidenav" style="background-color:white")
     ol(id="messages1" style="height: 79vh; overflow: auto")
+      each val in retrieveMessages
+        if val.ImpTag
+          li(id=val._id style="list-style:none" class="impMessageStyle")
+            div.card
+              div.card-header
+                b
+                  i=val.authName + ' '
+                span= val.date
+              div.card-body
+                p.card-text=val.message
+
 
   div(class="modal fade" id="myModal" role="dialog")
    div(class="modal-dialog")
@@ -18,6 +29,15 @@ block content
 
   div(id="main" class="container")
     ol(id="messages" style="height: 79vh; overflow: auto")
+      each val in retrieveMessages
+        li(id=val._id style="list-style:none" class="impMessageStyle")
+          div.card
+            div.card-header
+              b
+                i=val.authName + ' '
+              span= val.date
+            div.card-body
+              p.card-text=val.message
 
   |  <script id="message-template" type="text/template">
   |    <li style="list-style:none" class="impMessageStyle">

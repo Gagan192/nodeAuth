@@ -21,6 +21,7 @@ const jwt = require('jsonwebtoken');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var problem = require('./routes/problem');
 
 var app = express();
 
@@ -77,6 +78,7 @@ app.get('*',function(req,res,next){
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/problem', problem);
 
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
@@ -100,6 +102,7 @@ const {generateMessage} =require('./utils/message');
 const {isRealString}=require('./utils/validation');
 const {Users} = require('./utils/users');
 var User = require('./models/user');
+var Message = require('./models/message');
 
 const socketIO = require('socket.io');
 const port=process.env.PORT || 3000;
@@ -124,14 +127,15 @@ io.on('connection',(socket)=>{
             if(err)
             callback(err);
 
-            socket.join(params.room);
+            socket.join(params.questionId);
 
             users.removeUser(socket.id);
-            users.addUser(socket.id,user.name,params.room);
+            users.addUser(socket.id,user.name,decoded._id,params.questionId);
             //io.to(params.room).emit('updateUserList',users.getUserList(params.room));
 
+
             socket.emit('newMessage', generateMessage('Admin','Welcome to the chat app'));
-            socket.broadcast.to(params.room).emit('newMessage',generateMessage('Admin',`${user.name} has joined.`));
+            socket.broadcast.to(params.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has joined.`));
 
             callback();
         });
@@ -142,10 +146,26 @@ io.on('connection',(socket)=>{
     var user = users.getUser(socket.id);
 
     if(user && isRealString(message.text)){
-      //Emitting to All That are Connected
-      io.to(user.room).emit('newMessage',generateMessageImpTag(user.name,message.text,message.ImpTag));
+      //Saving The Message data
+      var newMessage = new Message({
+        authId: user.authId,
+        authName: user.name,
+        message: message.text,
+        ImpTag:message.ImpTag,
+        questionId: user.questionId,
+        date: new Date
+      });
+
+      newMessage.save(function (err) {
+        if (err) return console.log("Unable To save the Message");
+
+        //Emitting to All That are Connected
+        io.to(user.questionId).emit('newMessage',generateMessageImpTag(user.name,message.text,message.ImpTag));
+        callback();
+        })
+    }else {
+      callback();
     }
-    callback();
 
   });
 
@@ -154,7 +174,7 @@ io.on('connection',(socket)=>{
 
     if(user){
       //io.to(user.room).emit('updateUserList',users.getUserList(user.room));
-      io.to(user.room).emit('newMessage',generateMessage('Admin',`${user.name} has left.`));
+      io.to(user.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has left.`));
     }
   });
 });

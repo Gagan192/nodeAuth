@@ -2,13 +2,9 @@ var express = require('express');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
 var User = require('../models/user');
-
+var Message = require('../models/message');
 
 /* GET home page. */
-// router.get('/',function(req, res, next) {
-//   res.render('index', { title: 'Chat | App' });
-// });
-
 router.get('/', ensureAuthenticated ,function(req, res, next) {
   // console.log('I am here to print the id',req.session);
   // console.log('I am here to print the id',req.user._id);
@@ -26,8 +22,12 @@ router.get('/', ensureAuthenticated ,function(req, res, next) {
       if(err)
       res.render('login', { title: 'Login' , error:"Login Again"});
 
-      // console.log('My Token',user.tokens[0].token);
-      res.render('index', { title: 'Chat | App' , token:user.tokens[0].token});
+      Message.find({ questionId: 'global'},{authId:0,__v:0}, function (err, docs) {
+        if(err) res.render('login', { title: 'Login' , error:"Unable To fetch Previous data on the ProBlem"});
+
+        console.log(docs);
+        res.render('index', { title: 'Chat | App' , token:user.tokens[0].token,retrieveMessages:docs});
+      });
     });
 
   // res.render('index', { title: 'Chat | App' , token:token1});

@@ -1,0 +1,12 @@
+extends layout
+
+
+block content
+  h2.page-header Discussed
+  p Post Your Observation You seem To be a ProBlem For Majority of the people And Lets Discuss the Possible Solutions or View Already Discussed
+  form(method='post',action='/problem')
+    .form-group
+     label Observation
+     textarea.form-control(name='observation', type='text', placeholder='Post Your Observation/ProBlem')
+    .form-group
+    input.btn.btn-primary(type='submit',name='problem',value='Observation')

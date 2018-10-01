@@ -1,9 +1,6 @@
-var mongoose= require('mongoose');
 var bcrypt = require('bcryptjs');
 
-mongoose.connect('mongodb://localhost:27017/ChatApp');
-
-//var db = mongoose.connection;
+var {mongoose}= require('../db/mongoose');
 
 // User Schema
 var UserSchema = mongoose.Schema({

@@ -3,7 +3,7 @@ html(lang='en')
   head
     meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
     title #{title}
-    link( rel='stylesheet' ,href='/stylesheets/bootstrap.css')
+    link( rel='stylesheet' ,href='/stylesheets/bootstrap.min.css')
     link( rel='stylesheet' ,href='/stylesheets/style.css')
   body
     .navbar.navbar-expand-md.fixed-top.bg-dark.navbar-dark(role='navigation')
@@ -19,6 +19,9 @@ html(lang='en')
           ul.nav.navbar-nav.mr-auto
             li.nav-item(class=(title == 'Chat | App' ? 'active' : ''))
               a.nav-link(href='/') Home
+            if user
+              li.nav-item(class=(title == 'Discussed' ? 'active' : ''))
+                a.nav-link(href='/problem') Discussed
             if !user
              li.nav-item(class=(title == 'Register' ? 'active' : ''))
                a.nav-link(href='/users/register') Register
@@ -37,5 +40,5 @@ html(lang='en')
     block footer
 
     script(src='/javascripts/libs/jquery-3.3.1.min.js')
-    script(src='/javascripts/libs/bootstrap.js')
+    script(src='/javascripts/libs/bootstrap.min.js')
     script(src='/javascripts/javascript.js')

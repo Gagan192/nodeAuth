@@ -8,8 +8,8 @@ class Users{
   constructor(){
     this.users=[];
   }
-  addUser(id,name,room){
-    var user = {id,name,room};
+  addUser(id,name,authId,questionId){
+    var user = {id,name,authId,questionId};
     this.users.push(user);
     return user;
   }
@@ -26,9 +26,9 @@ removeUser(id){
     })[0];
     return users;
   }
-  getUserList(room){
+  getUserList(questionId){
     var users = this.users.filter((user)=>{
-      return user.room === room;
+      return user.questionId === questionId;
     });
     var namesArray = users.map((user)=>{
      return user.name;
@@ -37,32 +37,3 @@ removeUser(id){
   }
 }
 module.exports={Users};
-
-// //But We will use ES6 classes
-// class Person{
-//   constructor(name,age){
-//     this.name=name;
-//     this.age=age;
-//   }
-//   getUserDescription(){
-//     return `${this.name} is ${this.age} year(s) old.`;
-//   }
-// }
-//
-// var me = new Person('Gagan',22);
-// // console.log('this.name',me.name);
-// // console.log('this.age',me.age);
-// var description = me.getUserDescription();
-// console.log(description);
-//
-
-
-
-// //standard method
-// var users = [];
-//
-// var addUser=(id,name,room)=>{
-//   users.push({})
-// }
-//
-// modules.export ={addUsers}
