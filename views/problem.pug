@@ -1,7 +1,7 @@
 extends layout
 
-
 block content
+
   h2.page-header Discussed
   p Post Your Observation You seem To be a ProBlem For Majority of the people And Lets Discuss the Possible Solutions or View Already Discussed
   form(method='post',action='/problem')
@@ -10,3 +10,26 @@ block content
      textarea.form-control(name='observation', type='text', placeholder='Post Your Observation/ProBlem')
     .form-group
     input.btn.btn-primary(type='submit',name='problem',value='Observation')
+
+  table(class="table table-striped")
+    thead
+      tr
+        th Problems discussed
+        if title == 'Discussed11'
+          th ID
+          th action
+          th Discussed
+    tbody
+      each val in problem
+        tr
+          td= val.problem
+          if title == 'Discussed11'
+            td= val._id
+            if val.active
+              td true
+            if !val.active
+              td false
+            if val.discussed
+              td true
+            if !val.discussed
+              td false
