@@ -26,12 +26,16 @@ ul.error li{
    list-style: none;
 }
 
-ol#messages li:last-child{
+div#messages li:last-child{
   padding-bottom: 22px;
 }
 
-ol#messages1 li:last-child{
+div#messages1 li:last-child{
   padding-bottom: 22px;
+}
+div.panel{
+  padding:4px;
+  border:1px dotted grey;
 }
 
 .sidenav {
@@ -43,7 +47,7 @@ ol#messages1 li:last-child{
     left: 0;
     background-color: #11;
     overflow-x: hidden;
-    transition: 0.5s;
+    /* transition: 0.5s; */
     padding-top: 60px;
     padding-bottom: 60px;
     border-right-style: solid;
@@ -52,10 +56,11 @@ ol#messages1 li:last-child{
 .impMessageStyle {
   margin-top:5px;
   margin-right:5px;
+  margin-left:5px;
 }
 
 #main {
-    transition: margin-left .5s;
+    /* transition: margin-left .5s; */
 }
 
 @media screen and (max-height: 450px) {

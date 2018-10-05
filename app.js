@@ -97,6 +97,7 @@ app.use('/problem', problem);
 // });
 
 
+const {generateTime} = require('./utils/message');
 const {generateMessageImpTag} = require('./utils/message');
 const {generateMessage} =require('./utils/message');
 const {isRealString}=require('./utils/validation');
@@ -147,26 +148,33 @@ io.on('connection',(socket)=>{
 
     if(user && isRealString(message.text)){
       //Saving The Message data
+      var createdTime= generateTime();
+      console.log(createdTime);
       var newMessage = new Message({
         authId: user.authId,
         authName: user.name,
         message: message.text,
         ImpTag:message.ImpTag,
         questionId: user.questionId,
-        date: new Date
+        date: createdTime.createdAt
       });
 
-      newMessage.save(function (err) {
+      newMessage.save(function (err,doc) {
         if (err) return console.log("Unable To save the Message");
 
+        console.log(doc);
         //Emitting to All That are Connected
-        io.to(user.questionId).emit('newMessage',generateMessageImpTag(user.name,message.text,message.ImpTag));
+        io.to(user.questionId).emit('newMessage',generateMessageImpTag(user.name,message.text,message.ImpTag,doc._id));
         callback();
         })
     }else {
       callback();
     }
 
+  });
+
+  socket.on('upvote',(upvote,callback)=>{
+    console.log('Hello',upvote.upvoteId);
   });
 
   socket.on('disconnect',()=>{

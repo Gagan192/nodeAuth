@@ -4,7 +4,7 @@ function scrollToBottom(chat_box){
   //Selectors
   var messages =jQuery(chat_box);
   var newMessage= messages.children('li:last-child')
-  console.log('Gagan',messages);
+
   //Heights
   var clientHeight = messages.prop('clientHeight');
   var scrollTop = messages.prop('scrollTop');
@@ -40,7 +40,8 @@ function scrollToBottom(chat_box){
       var html = Mustache.render(template,{
         text: message.text,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        messageId: message.messageId
       });
     jQuery('#messages').append(html);
     jQuery('#messages1').append(html);
@@ -48,7 +49,8 @@ function scrollToBottom(chat_box){
       var html = Mustache.render(template,{
         text: message.text,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        messageId: message.messageId
       });
     jQuery('#messages').append(html);
     }
@@ -92,5 +94,14 @@ function scrollToBottom(chat_box){
                 buttonpressed='';
             }
 
+      })
+
+      $('.upvote').click(function() {
+          var upvoteId = $(this).attr('id');
+          socket.emit('upvote',{
+            upvoteId:upvoteId
+          },function(){
+          messageTextbox.val("")
+          });
       })
   })

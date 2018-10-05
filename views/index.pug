@@ -3,17 +3,18 @@ extends layout
 
 block content
   div(id="mySidenav" class="sidenav" style="background-color:white")
-    ol(id="messages1" style="height: 79vh; overflow: auto")
+    div(id="messages1" style="height: 79vh; overflow: auto")
       each val in retrieveMessages
         if val.ImpTag
           li(id=val._id style="list-style:none" class="impMessageStyle")
-            div.card
-              div.card-header
-                b
-                  i=val.authName + ' '
-                span= val.date
-              div.card-body
-                p.card-text=val.message
+            div.panel.rounded
+              i(style="color:grey;font-size:smaller")
+                b=val.authName + ' '
+                span=val.date
+              br
+              b=val.message
+              br
+              span(class="btn btn-info btn-sm fa fa-thumbs-up upvote" id=val._id) Vote
 
 
   div(class="modal fade" id="myModal" role="dialog")
@@ -28,27 +29,26 @@ block content
          button(type="button" class="btn btn-default" data-dismiss="modal") Close
 
   div(id="main" class="container")
-    ol(id="messages" style="height: 79vh; overflow: auto")
+    div(id="messages" style="height: 79vh; overflow: auto")
       each val in retrieveMessages
         li(id=val._id style="list-style:none" class="impMessageStyle")
-          div.card
-            div.card-header
-              b
-                i=val.authName + ' '
-              span= val.date
-            div.card-body
-              p.card-text=val.message
+          div.panel.rounded
+            i(style="color:grey;font-size:smaller")
+              b=val.authName + '  '
+              span=val.date + '   '
+            br
+            b=val.message
+
 
   |  <script id="message-template" type="text/template">
-  |    <li style="list-style:none" class="impMessageStyle">
-  |      <div class="card">
-  |        <div class="card-header">
-  |      <b><i>{{from}}</i></b>
-  |      <span>{{createdAt}}</span>
-  |      </div>
-  |      <div class="card-body">
-  |        <p class="card-text">{{text}}</p>
-  |      </div>
+  |    <li id="{{messageId}}" style="list-style:none" class="impMessageStyle">
+  |      <div class="panel rounded">
+  |      <i style="color:grey;font-size:smaller">
+  |          <b>{{from}}</b>
+  |          <span>{{createdAt}}</span>
+  |      </i>
+  |      <br>
+  |        <b>{{text}}</b>
   |     </div>
   |    </li>
   |  </script>

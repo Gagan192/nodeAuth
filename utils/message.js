@@ -7,13 +7,19 @@ var generateMessage = (from,text)=>{
     createdAt: moment().valueOf()
   }
 };
-var generateMessageImpTag = (from,text,ImpTag)=>{
+var generateMessageImpTag = (from,text,ImpTag,messageId)=>{
   return{
     from,
     text,
     createdAt: moment().valueOf(),
-    ImpTag
+    ImpTag,
+    messageId
   }
 };
 
-module.exports = {generateMessage , generateMessageImpTag};
+var generateTime = ()=>{
+  return{
+    createdAt: moment().format('h:mm a')
+  }
+};
+module.exports = {generateTime,generateMessage , generateMessageImpTag};
