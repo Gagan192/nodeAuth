@@ -104,6 +104,7 @@ const {isRealString}=require('./utils/validation');
 const {Users} = require('./utils/users');
 var User = require('./models/user');
 var Message = require('./models/message');
+var Vote = require('./models/vote');
 
 const socketIO = require('socket.io');
 const port=process.env.PORT || 3000;
@@ -135,8 +136,8 @@ io.on('connection',(socket)=>{
             //io.to(params.room).emit('updateUserList',users.getUserList(params.room));
 
 
-            socket.emit('newMessage', generateMessage('Admin','Welcome to the chat app'));
-            socket.broadcast.to(params.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has joined.`));
+            socket.emit('newMessage', generateMessage('Admin','Welcome to the World Of Innovation'));
+            // socket.broadcast.to(params.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has joined.`));
 
             callback();
         });
@@ -149,7 +150,6 @@ io.on('connection',(socket)=>{
     if(user && isRealString(message.text)){
       //Saving The Message data
       var createdTime= generateTime();
-      console.log(createdTime);
       var newMessage = new Message({
         authId: user.authId,
         authName: user.name,
@@ -162,7 +162,6 @@ io.on('connection',(socket)=>{
       newMessage.save(function (err,doc) {
         if (err) return console.log("Unable To save the Message");
 
-        console.log(doc);
         //Emitting to All That are Connected
         io.to(user.questionId).emit('newMessage',generateMessageImpTag(user.name,message.text,message.ImpTag,doc._id));
         callback();
@@ -174,7 +173,49 @@ io.on('connection',(socket)=>{
   });
 
   socket.on('upvote',(upvote,callback)=>{
-    console.log('Hello',upvote.upvoteId);
+
+    var user = users.getUser(socket.id);
+    if(user){
+      Vote.findOne({authId:user.authId,messageId:upvote.upvoteId},function(err,voteStatus){
+        if(err) callback();
+
+        if(voteStatus){
+            Vote.findOneAndUpdate({_id:voteStatus._id},{"like":!voteStatus.like},{new:true},function(err){
+              if(err) callback();
+              if(voteStatus.like){
+                Message.decLike(upvote.upvoteId,function(err,message){
+                  if(!err){
+                    io.to(user.questionId).emit('updateVote',message.like,message._id);
+                  }
+                  callback();
+                });
+              }else {
+                Message.incLike(upvote.upvoteId,function(err,message){
+                  if(!err){
+                    io.to(user.questionId).emit('updateVote',message.like,message._id);
+                  }
+                  callback();
+                });
+              }
+          });
+        }else {
+          var upVote = new Vote({
+            authId: user.authId,
+            messageId: upvote.upvoteId,
+            like:true
+          });
+          upVote.save(function(err){
+            if(err) callback();
+          Message.incLike(upvote.upvoteId,function(err,message){
+            if(!err){
+              io.to(user.questionId).emit('updateVote',message.like,message._id);
+            }
+            callback();
+            });
+          });
+        }
+      });
+    }
   });
 
   socket.on('disconnect',()=>{
@@ -182,7 +223,7 @@ io.on('connection',(socket)=>{
 
     if(user){
       //io.to(user.room).emit('updateUserList',users.getUserList(user.room));
-      io.to(user.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has left.`));
+      // io.to(user.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has left.`));
     }
   });
 });

@@ -36,6 +36,8 @@ function scrollToBottom(chat_box){
   socket.on('newMessage',function(message){
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template =jQuery('#message-template').html();
+    var voteNormal= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote normal' id='"+ message.messageId +"'> 0</span>";
+    var voteImp= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote imp' id='"+ message.messageId +"'> 0</span>";
     if(message.ImpTag){
       var html = Mustache.render(template,{
         text: message.text,
@@ -44,7 +46,9 @@ function scrollToBottom(chat_box){
         messageId: message.messageId
       });
     jQuery('#messages').append(html);
+    jQuery("#"+message.messageId).children().append(voteNormal).html();
     jQuery('#messages1').append(html);
+    jQuery("#"+message.messageId).children().append(voteImp).html();
     }else {
       var html = Mustache.render(template,{
         text: message.text,
@@ -59,6 +63,11 @@ function scrollToBottom(chat_box){
     scrollToBottom('#messages1');
   });
 
+  socket.on('updateVote',function(like,id){
+    $('li#'+id+' .imp').text(' '+like);
+    $('li#'+id+' .normal').text(' '+like);
+  });
+
   socket.on('disconnect',function(){
     console.log('Disconnected from the server');
   });
@@ -69,7 +78,7 @@ function scrollToBottom(chat_box){
        var buttonpressed;
       $('.submitbutton').click(function() {
             buttonpressed = $(this).attr('name');
-      })
+      });
 
       $('#message-form').on('submit',function(e) {
         e.preventDefault();
@@ -94,14 +103,14 @@ function scrollToBottom(chat_box){
                 buttonpressed='';
             }
 
-      })
+      });
 
-      $('.upvote').click(function() {
+      $(document).delegate('.upvote','click',function() {
           var upvoteId = $(this).attr('id');
           socket.emit('upvote',{
             upvoteId:upvoteId
           },function(){
-          messageTextbox.val("")
+        //  messageTextbox.val("")
           });
-      })
-  })
+      });
+  });

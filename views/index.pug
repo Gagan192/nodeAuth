@@ -14,7 +14,7 @@ block content
               br
               b=val.message
               br
-              span(class="btn btn-info btn-sm fa fa-thumbs-up upvote" id=val._id) Vote
+              span(class="btn btn-info btn-sm fa fa-thumbs-up upvote imp" id=val._id)=' ' + val.like
 
 
   div(class="modal fade" id="myModal" role="dialog")
@@ -38,6 +38,9 @@ block content
               span=val.date + '   '
             br
             b=val.message
+            if val.ImpTag
+              br
+              span(class="btn btn-info btn-sm fa fa-thumbs-up upvote normal" id=val._id)=' ' + val.like
 
 
   |  <script id="message-template" type="text/template">
@@ -49,6 +52,7 @@ block content
   |      </i>
   |      <br>
   |        <b>{{text}}</b>
+  |      <br>
   |     </div>
   |    </li>
   |  </script>
