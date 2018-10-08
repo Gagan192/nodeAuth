@@ -36,8 +36,8 @@ function scrollToBottom(chat_box){
   socket.on('newMessage',function(message){
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template =jQuery('#message-template').html();
-    var voteNormal= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote normal' id='"+ message.messageId +"'> 0</span>";
-    var voteImp= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote imp' id='"+ message.messageId +"'> 0</span>";
+    var voteNormal= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote upNormal impMessageStyle' id='"+ message.messageId +"'> 0</span><span class='btn btn-info btn-sm fa fa-thumbs-down downvote downNormal impMessageStyle' id='"+ message.messageId +"'> 0</span>";
+    var voteImp= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote upImp impMessageStyle' id='"+ message.messageId +"'> 0</span><span class='btn btn-info btn-sm fa fa-thumbs-down downvote downImp impMessageStyle' id='"+ message.messageId +"'> 0</span>";
     if(message.ImpTag){
       var html = Mustache.render(template,{
         text: message.text,
@@ -64,8 +64,27 @@ function scrollToBottom(chat_box){
   });
 
   socket.on('updateVote',function(like,id){
-    $('li#'+id+' .imp').text(' '+like);
-    $('li#'+id+' .normal').text(' '+like);
+    $('li#'+id+' .upImp').text(' '+like);
+    $('li#'+id+' .upNormal').text(' '+like);
+  });
+
+  socket.on('updateDownvote',function(unlike,id){
+    $('li#'+id+' .downImp').text(' '+unlike);
+    $('li#'+id+' .downNormal').text(' '+unlike);
+  });
+
+  socket.on('updateIncLikeDecUnlike',function(like,unlike,id){
+    $('li#'+id+' .upImp').text(' '+like);
+    $('li#'+id+' .upNormal').text(' '+like);
+    $('li#'+id+' .downImp').text(' '+unlike);
+    $('li#'+id+' .downNormal').text(' '+unlike);
+  });
+
+  socket.on('updateIncUnlikeDecLike',function(like,unlike,id){
+    $('li#'+id+' .upImp').text(' '+like);
+    $('li#'+id+' .upNormal').text(' '+like);
+    $('li#'+id+' .downImp').text(' '+unlike);
+    $('li#'+id+' .downNormal').text(' '+unlike);
   });
 
   socket.on('disconnect',function(){
@@ -109,6 +128,15 @@ function scrollToBottom(chat_box){
           var upvoteId = $(this).attr('id');
           socket.emit('upvote',{
             upvoteId:upvoteId
+          },function(){
+        //  messageTextbox.val("")
+          });
+      });
+
+      $(document).delegate('.downvote','click',function() {
+          var downvoteId = $(this).attr('id');
+          socket.emit('downvote',{
+            downvoteId:downvoteId
           },function(){
         //  messageTextbox.val("")
           });

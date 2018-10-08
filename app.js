@@ -180,22 +180,34 @@ io.on('connection',(socket)=>{
         if(err) callback();
 
         if(voteStatus){
-            Vote.findOneAndUpdate({_id:voteStatus._id},{"like":!voteStatus.like},{new:true},function(err){
+            Vote.findOneAndUpdate({_id:voteStatus._id},{"like":!voteStatus.like,"unlike":false},{new:true},function(err){
               if(err) callback();
               if(voteStatus.like){
                 Message.decLike(upvote.upvoteId,function(err,message){
-                  if(!err){
+                  // console.log('Message',message);
+                  if(message){
                     io.to(user.questionId).emit('updateVote',message.like,message._id);
                   }
                   callback();
                 });
               }else {
-                Message.incLike(upvote.upvoteId,function(err,message){
-                  if(!err){
-                    io.to(user.questionId).emit('updateVote',message.like,message._id);
-                  }
-                  callback();
-                });
+                if(voteStatus.unlike){
+                  Message.incLikeDecUnlike(upvote.upvoteId,function(err,message){
+                    // console.log('Message',message);
+                    if(message){
+                      io.to(user.questionId).emit('updateIncLikeDecUnlike',message.like,message.unlike,message._id);
+                    }
+                    callback();
+                  });
+                }else {
+                  Message.incLike(upvote.upvoteId,function(err,message){
+                    // console.log('Message',message);
+                    if(message){
+                      io.to(user.questionId).emit('updateVote',message.like,message._id);
+                    }
+                    callback();
+                  });
+                }
               }
           });
         }else {
@@ -204,14 +216,74 @@ io.on('connection',(socket)=>{
             messageId: upvote.upvoteId,
             like:true
           });
-          upVote.save(function(err){
-            if(err) callback();
           Message.incLike(upvote.upvoteId,function(err,message){
-            if(!err){
+            // console.log('Message',message);
+            if(message){
+              upVote.save(function(err){
+                if(err) callback();
               io.to(user.questionId).emit('updateVote',message.like,message._id);
+              });
             }
             callback();
-            });
+          });
+        }
+      });
+    }
+  });
+
+  socket.on('downvote',(downvote,callback)=>{
+
+    var user = users.getUser(socket.id);
+    if(user){
+      Vote.findOne({authId:user.authId,messageId:downvote.downvoteId},function(err,voteStatus){
+        if(err) callback();
+
+        if(voteStatus){
+            Vote.findOneAndUpdate({_id:voteStatus._id},{"unlike":!voteStatus.unlike,"like":false},{new:true},function(err){
+              if(err) callback();
+              if(voteStatus.unlike){
+                Message.decUnlike(downvote.downvoteId,function(err,message){
+                  // console.log('Message',message);
+                  if(message){
+                    io.to(user.questionId).emit('updateDownvote',message.unlike,message._id);
+                  }
+                  callback();
+                });
+              }else {
+                if(voteStatus.like){
+                  Message.incUnlikeDecLike(downvote.downvoteId,function(err,message){
+                    // console.log('Message',message);
+                    if(message){
+                      io.to(user.questionId).emit('updateIncUnlikeDecLike',message.like,message.unlike,message._id);
+                    }
+                    callback();
+                  });
+                }else {
+                  Message.incUnlike(downvote.downvoteId,function(err,message){
+                    // console.log('Message',message);
+                    if(message){
+                      io.to(user.questionId).emit('updateDownvote',message.unlike,message._id);
+                    }
+                    callback();
+                  });
+                }
+              }
+          });
+        }else {
+          var downVote = new Vote({
+            authId: user.authId,
+            messageId: downvote.downvoteId,
+            unlike:true
+          });
+          Message.incUnlike(downvote.downvoteId,function(err,message){
+            // console.log('Message',message);
+            if(message){
+              downVote.save(function(err){
+                if(err) callback();
+              io.to(user.questionId).emit('updateDownvote',message.unlike,message._id);
+              });
+            }
+            callback();
           });
         }
       });

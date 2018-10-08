@@ -29,6 +29,10 @@ var UserSchema = mongoose.Schema({
   like: {
     type:Number,
     default: 0
+  },
+  unlike: {
+    type:Number,
+    default: 0
   }
 });
 
@@ -41,4 +45,20 @@ module.exports.incLike= function(id,callback){
 
 module.exports.decLike= function(id,callback){
   Message.findOneAndUpdate({_id:id},{$inc:{like:-1}},{new:true},callback);
+};
+
+module.exports.incUnlike= function(id,callback){
+  Message.findOneAndUpdate({_id:id},{$inc:{unlike:1}},{new:true},callback);
+};
+
+module.exports.decUnlike= function(id,callback){
+  Message.findOneAndUpdate({_id:id},{$inc:{unlike:-1}},{new:true},callback);
+};
+
+module.exports.incLikeDecUnlike= function(id,callback){
+  Message.findOneAndUpdate({_id:id},{$inc:{like:1,unlike:-1}},{new:true},callback);
+};
+
+module.exports.incUnlikeDecLike= function(id,callback){
+  Message.findOneAndUpdate({_id:id},{$inc:{like:-1,unlike:1}},{new:true},callback);
 };
