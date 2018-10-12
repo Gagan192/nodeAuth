@@ -63,6 +63,11 @@ function scrollToBottom(chat_box){
     scrollToBottom('#messages1');
   });
 
+  socket.on('updateQuestionvote',function(like,id){
+    console.log('number of likes',like);
+    $('.impQuestion').text(' '+like);
+  });
+
   socket.on('updateVote',function(like,id){
     $('li#'+id+' .upImp').text(' '+like);
     $('li#'+id+' .upNormal').text(' '+like);
@@ -137,6 +142,15 @@ function scrollToBottom(chat_box){
           var downvoteId = $(this).attr('id');
           socket.emit('downvote',{
             downvoteId:downvoteId
+          },function(){
+        //  messageTextbox.val("")
+          });
+      });
+
+      $(document).delegate('.voteQuestion','click',function() {
+          var voteQuestionId = $(this).attr('id');
+          socket.emit('voteQuestion',{
+            voteQuestionId:voteQuestionId
           },function(){
         //  messageTextbox.val("")
           });

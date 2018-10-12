@@ -18,6 +18,7 @@ var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 //var db = mongoose.connection;
 const jwt = require('jsonwebtoken');
+var compression = require('compression');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -35,6 +36,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// compress all responses
+app.use(compression());
 
 // Handle Sessions
 app.use(session({
@@ -105,6 +109,8 @@ const {Users} = require('./utils/users');
 var User = require('./models/user');
 var Message = require('./models/message');
 var Vote = require('./models/vote');
+var QuestionVote = require('./models/questionVote');
+var Problem = require('./models/problem');
 
 const socketIO = require('socket.io');
 const port=process.env.PORT || 3000;
@@ -281,6 +287,55 @@ io.on('connection',(socket)=>{
               downVote.save(function(err){
                 if(err) callback();
               io.to(user.questionId).emit('updateDownvote',message.unlike,message._id);
+              });
+            }
+            callback();
+          });
+        }
+      });
+    }
+  });
+
+  socket.on('voteQuestion',(voteQuestion,callback)=>{
+
+    var user = users.getUser(socket.id);
+    if(user){
+      QuestionVote.findOne({authId:user.authId,questionId:voteQuestion.voteQuestionId},function(err,voteStatus){
+        if(err) callback();
+
+        if(voteStatus){
+            QuestionVote.findOneAndUpdate({_id:voteStatus._id},{"like":!voteStatus.like},{new:true},function(err){
+              if(err) callback();
+              if(voteStatus.like){
+                Problem.decLike(voteQuestion.voteQuestionId,function(err,problem){
+                  // console.log('Message',message);
+                  if(problem){
+                    io.to(user.questionId).emit('updateQuestionvote',problem.like,problem._id);
+                  }
+                  callback();
+                });
+              }else {
+                Problem.incLike(voteQuestion.voteQuestionId,function(err,problem){
+                  // console.log('Message',message);
+                  if(problem){
+                    io.to(user.questionId).emit('updateQuestionvote',problem.like,problem._id);
+                  }
+                  callback();
+                });
+              }
+          });
+        }else {
+          var Qvote = new QuestionVote({
+            authId: user.authId,
+            questionId: voteQuestion.voteQuestionId,
+            like:true
+          });
+          Problem.incLike(voteQuestion.voteQuestionId,function(err,problem){
+            // console.log('Message',message);
+            if(problem){
+              Qvote.save(function(err){
+                if(err) callback();
+              io.to(user.questionId).emit('updateQuestionvote',problem.like,problem._id);
               });
             }
             callback();

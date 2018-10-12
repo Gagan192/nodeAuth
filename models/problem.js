@@ -22,8 +22,20 @@ var UserSchema = mongoose.Schema({
   },
   date: {
     type:Date,
+  },
+  like: {
+    type:Number,
+    default: 0
   }
 });
 
 
 var Problem = module.exports = mongoose.model('Problem',UserSchema);
+
+module.exports.incLike= function(id,callback){
+  Problem.findOneAndUpdate({_id:id},{$inc:{like:1}},{new:true},callback);
+};
+
+module.exports.decLike= function(id,callback){
+  Problem.findOneAndUpdate({_id:id},{$inc:{like:-1}},{new:true},callback);
+};

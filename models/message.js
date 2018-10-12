@@ -16,7 +16,8 @@ var UserSchema = mongoose.Schema({
   },
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    index:true
   },
   ImpTag: {
     type:Boolean,
@@ -36,6 +37,7 @@ var UserSchema = mongoose.Schema({
   }
 });
 
+UserSchema.set('autoIndex', false);
 
 var Message = module.exports = mongoose.model('Message',UserSchema);
 

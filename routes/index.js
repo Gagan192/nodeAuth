@@ -8,7 +8,7 @@ var Problem = require('../models/problem');
 /* GET home page. */
 async function parallelExecution(id,token,access){
   const user =  User.findOneAndUpdate({_id:id},{"tokens":[{access,token}]},{new:true})
-  const problem = Problem.findOne({active:true,discussed:false},{_id:1,problem:1});
+  const problem = Problem.findOne({active:true,discussed:false},{_id:1,problem:1,like:1});
 
   try {
     var users = await user
