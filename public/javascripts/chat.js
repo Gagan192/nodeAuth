@@ -108,7 +108,8 @@ function scrollToBottom(chat_box){
 
               socket.emit('createMessage',{
                 text:messageTextbox.val(),
-                ImpTag:0
+                ImpTag:0,
+                createdAt: moment().format('h:mm a')
               },function(){
               messageTextbox.val("")
               });
@@ -117,7 +118,8 @@ function scrollToBottom(chat_box){
             else if(buttonpressed == 'Important'){
               socket.emit('createMessage',{
                 text:messageTextbox.val(),
-                ImpTag:1
+                ImpTag:1,
+                createdAt: moment().format('h:mm a')
               },function(){
               messageTextbox.val("")
               });

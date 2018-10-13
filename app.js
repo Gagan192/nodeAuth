@@ -142,7 +142,7 @@ io.on('connection',(socket)=>{
             //io.to(params.room).emit('updateUserList',users.getUserList(params.room));
 
 
-            socket.emit('newMessage', generateMessage('Admin','Welcome to the World Of Innovation'));
+          //  socket.emit('newMessage', generateMessage('Admin','Welcome to the World Of Innovation'));
             // socket.broadcast.to(params.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has joined.`));
 
             callback();
@@ -155,14 +155,14 @@ io.on('connection',(socket)=>{
 
     if(user && isRealString(message.text)){
       //Saving The Message data
-      var createdTime= generateTime();
+      //var createdTime= generateTime();
       var newMessage = new Message({
         authId: user.authId,
         authName: user.name,
         message: message.text,
         ImpTag:message.ImpTag,
         questionId: user.questionId,
-        date: createdTime.createdAt
+        date: message.createdAt
       });
 
       newMessage.save(function (err,doc) {
