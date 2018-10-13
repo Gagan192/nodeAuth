@@ -67,11 +67,10 @@ block content
   |           localStorage.setItem("question", "#{question._id}");</script>
 
 block footer
-
-     .container.fixed-bottom(style="background-color:white")
-        form(id="message-form")
-         div(class="input-group")
-           input(name="message" type="text" class="form-control" autofocus autocomplete="off" placeholder="Type Your Message...")
-           div(class="input-group-btn")
-             button(class="btn btn-outline-secondary submitbutton"  name="Normal" type="submit") Send
-             button(class="btn btn-outline-secondary submitbutton"  name="Important" type="submit") Mark
+  .navbar.navbar-expand-md.fixed-bottom.bg-dark.navbar-dark(role='navigation')
+   .container
+    div(class="input-group")
+      textarea(type="text" name="message" class="form-control" style="height:40px" placeholder="Type Your Message..." autofocus autocomplete="off" aria-label="Message Text" aria-describedby="basic-addon2")
+      div(class="input-group-append")
+        button(class="btn btn-outline-secondary submitbutton" name="Normal" type="button") Send
+        button(class="btn btn-outline-secondary submitbutton" name="Important" type="button") Mark

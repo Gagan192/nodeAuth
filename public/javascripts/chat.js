@@ -96,17 +96,14 @@ function scrollToBottom(chat_box){
     console.log('Disconnected from the server');
   });
 
-
   $(function() {
 
        var buttonpressed;
       $('.submitbutton').click(function() {
             buttonpressed = $(this).attr('name');
-      });
 
-      $('#message-form').on('submit',function(e) {
-        e.preventDefault();
         var messageTextbox = $('[name=message]');
+        // var html = text.replace(/\n/g,"<br>");
             if(buttonpressed == 'Normal'){
 
               socket.emit('createMessage',{

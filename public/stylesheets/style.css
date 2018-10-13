@@ -26,6 +26,10 @@ ul.error li{
    list-style: none;
 }
 
+b{
+  white-space:pre-wrap
+}
+
 div#messages li:last-child{
   padding-bottom: 22px;
 }
