@@ -18,8 +18,9 @@ html(lang='en')
           span.navbar-toggler-icon
         #navbarNavAltMarkup.collapse.navbar-collapse
           ul.nav.navbar-nav.mr-auto
-            li.nav-item(class=(title == 'Chat | App' ? 'active' : ''))
-              a.nav-link(href='/') Home
+            if user
+              li.nav-item(class=(title == 'Chat | App' ? 'active' : ''))
+                a.nav-link(href='/') Home
             if user
               li.nav-item(class=(title == 'Discussed' ? 'active' : ''))
                 a.nav-link(href='/problem') Discussed

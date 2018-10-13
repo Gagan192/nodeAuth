@@ -1,4 +1,6 @@
 var socket = io();
+var past, now;
+var count = 0;
 
 function scrollToBottom(chat_box){
   //Selectors
@@ -18,6 +20,9 @@ function scrollToBottom(chat_box){
   }
 
 }
+  //Scroll to bottom of Chat on Page load
+  $("#messages").scrollTop($('#messages')[0].scrollHeight - $('#messages')[0].clientHeight);
+  $("#messages1").scrollTop($('#messages1')[0].scrollHeight - $('#messages1')[0].clientHeight);
 
   socket.on('connect',function(){
     //var params = jQuery.deparam(window.location.search);
@@ -116,6 +121,28 @@ function scrollToBottom(chat_box){
                 buttonpressed='';
             }
             else if(buttonpressed == 'Important'){
+              count++;
+              if(count==1){
+                 past = new Date().getTime();
+              }
+              if(count==5){
+                 now = new Date().getTime();
+                 count = 0;
+                 var total = (5*60*1000)-(now-past);
+                // no more clicks until timer expires
+                if(total>0)
+                {
+                  $(this).attr("disabled", "disabled");
+
+                  // set timer to re-enable the button
+                  setTimeout(function() {
+                      $("#markBtn").removeAttr("disabled");
+                  }, total);
+
+                }
+
+              }
+
               socket.emit('createMessage',{
                 text:messageTextbox.val(),
                 ImpTag:1,
