@@ -30,6 +30,16 @@ b{
   white-space:pre-wrap
 }
 
+textarea {
+  margin:0px 0px;
+  padding:5px;
+  height:38px;
+  line-height:16px;
+  width:96%;
+  display:block;
+  margin:0px auto;
+}
+
 div#messages li:last-child{
   padding-bottom: 22px;
 }
@@ -40,6 +50,12 @@ div#messages1 li:last-child{
 div.panel{
   padding:4px;
   border:1px dotted grey;
+}
+
+div#count{
+position: fixed;
+top: 40%;
+right: 0%;
 }
 
 .sidenav {

@@ -139,7 +139,7 @@ io.on('connection',(socket)=>{
 
             users.removeUser(socket.id);
             users.addUser(socket.id,user.name,decoded._id,params.questionId);
-            //io.to(params.room).emit('updateUserList',users.getUserList(params.room));
+            io.to(params.questionId).emit('updateCount',users.getCountUser(params.questionId));
 
 
           //  socket.emit('newMessage', generateMessage('Admin','Welcome to the World Of Innovation'));
@@ -349,7 +349,7 @@ io.on('connection',(socket)=>{
     var user = users.removeUser(socket.id);
 
     if(user){
-      //io.to(user.room).emit('updateUserList',users.getUserList(user.room));
+      io.to(user.questionId).emit('updateCount',users.getCountUser(user.questionId));
       // io.to(user.questionId).emit('newMessage',generateMessage('Admin',`${user.name} has left.`));
     }
   });

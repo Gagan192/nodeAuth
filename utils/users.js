@@ -35,5 +35,9 @@ removeUser(id){
     });
     return namesArray;
   }
+  getCountUser(questionId){
+    var users = this.users.length;
+    return users;
+  }
 }
 module.exports={Users};

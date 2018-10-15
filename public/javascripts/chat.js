@@ -37,6 +37,9 @@ function scrollToBottom(chat_box){
     });
   });
 
+  socket.on('updateCount',function(count){
+  $('#count').text('#'+count);
+  });
 
   socket.on('newMessage',function(message){
     var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -63,13 +66,13 @@ function scrollToBottom(chat_box){
       });
     jQuery('#messages').append(html);
     }
-
+    document.getElementById('notification').play();
     scrollToBottom('#messages');
     scrollToBottom('#messages1');
   });
 
   socket.on('updateQuestionvote',function(like,id){
-    console.log('number of likes',like);
+    // console.log('number of likes',like);
     $('.impQuestion').text(' '+like);
   });
 
@@ -117,6 +120,7 @@ function scrollToBottom(chat_box){
                 createdAt: moment().format('h:mm a')
               },function(){
               messageTextbox.val("")
+              $('#txtarea').height("25px");
               });
                 buttonpressed='';
             }
@@ -149,6 +153,7 @@ function scrollToBottom(chat_box){
                 createdAt: moment().format('h:mm a')
               },function(){
               messageTextbox.val("")
+              $('#txtarea').height("25px");
               });
                 buttonpressed='';
             }

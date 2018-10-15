@@ -43,7 +43,8 @@ block content
               br
               span(class="btn btn-info btn-sm fa fa-thumbs-up upvote upNormal impMessageStyle" id=val._id)=' ' + val.like
               span(class="btn btn-info btn-sm fa fa-thumbs-down downvote downNormal impMessageStyle" id=val._id)=' '+ val.unlike
-
+  div.btn.btn-info(id="count")
+  audio(id="notification" src="/../sound/unconvinced.mp3" preload="auto")
   |  <script id="message-template" type="text/template">
   |    <li id="{{messageId}}" style="list-style:none" class="impMessageStyle">
   |      <div class="panel rounded">
@@ -69,7 +70,7 @@ block content
 block footer
   .container.fixed-bottom(style="background-color:white")
     div(class="input-group")
-       textarea(name="message" type="text" class="form-control" style="height:38px" autofocus autocomplete="off" placeholder="Type Your Message...")
+       textarea(name="message" id="txtarea" type="text" class="form-control" autofocus autocomplete="off" placeholder="Type Your Message...")
        div(class="input-group-btn")
          button(class="btn btn-outline-secondary submitbutton"  name="Normal" type="submit") Send
          button(class="btn btn-outline-secondary submitbutton"  name="Important" type="submit" id="markBtn") Mark
