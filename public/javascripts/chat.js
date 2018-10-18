@@ -51,7 +51,8 @@ function scrollToBottom(chat_box){
         text: message.text,
         from: message.from,
         createdAt: formattedTime,
-        messageId: message.messageId
+        messageId: message.messageId,
+        identity: 'impMessageStyle'
       });
     jQuery('#messages').append(html);
     jQuery("#"+message.messageId).children().append(voteNormal).html();
@@ -62,13 +63,33 @@ function scrollToBottom(chat_box){
         text: message.text,
         from: message.from,
         createdAt: formattedTime,
-        messageId: message.messageId
+        messageId: message.messageId,
+        identity: 'normalMessageStyle'
       });
     jQuery('#messages').append(html);
+    jQuery("#"+message.messageId).children().append(voteNormal).html();
     }
     document.getElementById('notification').play();
     scrollToBottom('#messages');
     scrollToBottom('#messages1');
+  });
+
+  socket.on('upgradeImp',function(message){
+    var template =jQuery('#message-template').html();
+    var voteImp= "<span class='btn btn-info btn-sm fa fa-thumbs-up upvote upImp impMessageStyle' id='"+ message._Id +"'> 0</span><span class='btn btn-info btn-sm fa fa-thumbs-down downvote downImp impMessageStyle' id='"+ message._id +"'> 0</span>";
+    var html = Mustache.render(template,{
+      text: message.message,
+      from: message.authName,
+      createdAt: message.date,
+      messageId: message._id,
+      identity: 'impMessageStyle'
+  });
+  jQuery('#messages1').append(html);
+  jQuery("#"+message._id).children().append(voteImp).html();
+});
+
+  socket.on('downgradeImp',function(id){
+    $('li#'+id).remove();
   });
 
   socket.on('updateQuestionvote',function(like,id){

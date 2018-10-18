@@ -119,6 +119,8 @@ var io = socketIO.listen(server);
 var users= new Users();
 
 io.on('connection',(socket)=>{
+  var upgradeImp = 1;
+  var downgradeImp = 1;
 
     socket.on('join',(params,callback)=>{
       // if(!isRealString(params.name) || !isRealString(params.room)){
@@ -207,7 +209,6 @@ io.on('connection',(socket)=>{
                   });
                 }else {
                   Message.incLike(upvote.upvoteId,function(err,message){
-                    // console.log('Message',message);
                     if(message){
                       io.to(user.questionId).emit('updateVote',message.like,message._id);
                     }
@@ -223,8 +224,14 @@ io.on('connection',(socket)=>{
             like:true
           });
           Message.incLike(upvote.upvoteId,function(err,message){
-            // console.log('Message',message);
-            if(message){
+
+              if(!message.ImpTag && message.like>upgradeImp){
+                Message.TagImp(upvote.upvoteId,function(err,message){
+                io.to(user.questionId).emit('upgradeImp',message);
+                });
+              }
+
+              if(message){
               upVote.save(function(err){
                 if(err) callback();
               io.to(user.questionId).emit('updateVote',message.like,message._id);
@@ -283,6 +290,13 @@ io.on('connection',(socket)=>{
           });
           Message.incUnlike(downvote.downvoteId,function(err,message){
             // console.log('Message',message);
+            if(message.ImpTag && message.unlike>downgradeImp){
+              Message.TagUnImp(downvote.downvoteId,function(err,message){
+                console.log('Message',message);
+                io.to(user.questionId).emit('downgradeImp',message._id);
+              });
+            }
+
             if(message){
               downVote.save(function(err){
                 if(err) callback();

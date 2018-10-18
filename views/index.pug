@@ -6,9 +6,9 @@ block content
     div(id="messages1" style="height: 79vh; overflow: auto")
       each val in retrieveMessages
         if val.ImpTag
-          li(id=val._id style="list-style:none" class="impMessageStyle")
+          li(id=val._id class="impMessageStyle")
             div.panel.rounded
-              i(style="color:grey;font-size:smaller")
+              i
                 b=val.authName + ' '
                 span=val.date
               br
@@ -32,23 +32,23 @@ block content
   div(id="main" class="container")
     div(id="messages" style="height:79vh; overflow:auto")
       each val in retrieveMessages
-        li(id=val._id style="list-style:none" class="impMessageStyle")
+        li(id=val._id class="normalMessageStyle")
           div.panel.rounded
-            i(style="color:grey;font-size:smaller")
+            i
               b=val.authName + '  '
               span=val.date + '   '
             br
             b=val.message
-            if val.ImpTag
-              br
-              span(class="btn btn-info btn-sm fa fa-thumbs-up upvote upNormal impMessageStyle" id=val._id)=' ' + val.like
-              span(class="btn btn-info btn-sm fa fa-thumbs-down downvote downNormal impMessageStyle" id=val._id)=' '+ val.unlike
+            br
+            span(class="btn btn-info btn-sm fa fa-thumbs-up upvote upNormal impMessageStyle" id=val._id)=' ' + val.like
+            span(class="btn btn-info btn-sm fa fa-thumbs-down downvote downNormal impMessageStyle" id=val._id)=' '+ val.unlike
+
   div.btn.btn-info(id="count")
   audio(id="notification" src="/../sound/unconvinced.mp3" preload="auto")
   |  <script id="message-template" type="text/template">
-  |    <li id="{{messageId}}" style="list-style:none" class="impMessageStyle">
+  |    <li id="{{messageId}}" class="{{identity}}">
   |      <div class="panel rounded">
-  |      <i style="color:grey;font-size:smaller">
+  |      <i>
   |          <b>{{from}}</b>
   |          <span>{{createdAt}}</span>
   |      </i>

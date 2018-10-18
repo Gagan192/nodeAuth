@@ -30,14 +30,14 @@ b{
   white-space:pre-wrap
 }
 
+i{
+  color:grey;
+  font-size:smaller;
+}
+
 textarea {
-  margin:0px 0px;
-  padding:5px;
   height:38px;
   line-height:16px;
-  width:96%;
-  display:block;
-  margin:0px auto;
 }
 
 div#messages li:last-child{
@@ -77,6 +77,14 @@ right: 0%;
   margin-top:5px;
   margin-right:5px;
   margin-left:5px;
+  list-style:none;
+}
+
+.normalMessageStyle {
+  margin-top:5px;
+  margin-right:5px;
+  margin-left:5px;
+  list-style:none;
 }
 
 #main {

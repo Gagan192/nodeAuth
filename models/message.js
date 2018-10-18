@@ -64,3 +64,11 @@ module.exports.incLikeDecUnlike= function(id,callback){
 module.exports.incUnlikeDecLike= function(id,callback){
   Message.findOneAndUpdate({_id:id},{$inc:{like:-1,unlike:1}},{new:true},callback);
 };
+
+module.exports.TagImp= function(id,callback){
+  Message.findOneAndUpdate({_id:id},{ImpTag:true},{new:true},callback);
+};
+
+module.exports.TagUnImp= function(id,callback){
+  Message.findOneAndUpdate({_id:id},{ImpTag:false},{new:true},callback);
+};
